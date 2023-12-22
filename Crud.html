@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>JavaScript Crud</title>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 520,
+                'GRAD' 0,
+                'opsz' 30
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+                "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #708d81;
+        }
+
+        #formDiv {
+            background-color: #d6ccc2;
+        }
+
+        input {
+            background-color: #d6ccc2;
+        }
+
+        #tableDiv {
+            background-color: #001427;
+            width: 98%;
+            margin: 0 auto;
+            padding: 25px;
+            border-radius: 30px;
+        }
+
+        thead {
+            background-color: #708d81;
+        }
+
+        table {
+            background-color: #006d77 !important;
+            border-radius: 25px !important;
+            margin-top: 20px;
+        }
+
+        #proImg {
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+        }
+
+        span {
+            color: red;
+        }
+
+        .icon {
+            color: white;
+            font-size: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Button trigger modal -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Data</h1>
+                        <button type="button" class="btn-close" onclick="resetForm()" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+
+                    </div>
+                    <div class="modal-body">
+                        <div class="w-100 p-3 border rounded" id="formDiv">
+                            <form action="" id="form">
+                                <label for="" class="w-100">First Name :</label>
+                                <input type="text" name="fname" class="w-100" id="fname">
+                                <span id="valid-fname"></span>
+
+                                <label for="" class="w-100 mt-1">Last Name :</label>
+                                <input type="text" name="lname" class="w-100" id="lname">
+                                <span id="valid-lname"></span>
+
+                                <label for="" class="w-100 mt-1">Email ID :</label>
+                                <input type="email" name="mail" class="w-100" id="mail">
+                                <span id="valid-mail"></span>
+
+                                <label for="" class="w-100 mt-1">Password :</label>
+                                <input type="password" name="fname" class="w-100" id="password">
+                                <span id="valid-password"></span>
+
+                                <label for="" class="w-100 mt-1">Address :</label>
+                                <input type="text" name="fname" class="w-100" id="address">
+                                <span id="valid-address"></span>
+
+                                <label for="" class="w-100 mt-1">Gender :</label>
+                                <input type="radio" name="Gender" id="radio-male" value="Male" class="mx-1">Male
+                                <input type="radio" name="Gender" id="radio-female" value="Female" class="mx-1">Female
+                                <input type="radio" name="Gender" id="radio-other" value="Other" class="mx-1">Other
+                                <br>
+                                <span id="valid-gender"></span>
+                                <br>
+
+                                <label for="" class="w-100 mt-2">Skills :</label>
+                                <input type="checkbox" name="JavaScript" value="JavaScript" class="mx-1">JavaScript
+                                <input type="checkbox" name="Html" value="Html" class="mx-1">Html
+                                <input type="checkbox" name="Css" value="Css" class="mx-1">Css
+                                <input type="checkbox" name="C++" value="C++" class="mx-1">C++
+                                <br>
+                                <span id="valid-skills"></span>
+                                <br>
+
+                                <label for="" class="w-100 mt-2">Profile :</label>
+                                <input type="file" placeholder="Upload Profile" onchange="getImageURL(this)"
+                                    class="w-75 border rounded">
+                                <br>
+                                <span id="valid-profile"></span>
+                                <img src="" id="imgprev"
+                                    style="height: 130px; width: 130px;margin-top: 8px; border-radius: 25px; display: none;"></img>
+                                <br>
+
+                                <button type="button" id="submitBtn" class="btn btn-info"
+                                    onclick="handleClick() ">Submit</button>
+                                <button type="button" class="btn btn-danger" onclick="resetForm()">Reset</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mt-3" id="tableDiv">
+        <div class="d-flex">
+
+
+            <h2 class="d-block text-start text-light w-50 p-1">Consumer Data</h2>
+            <div class="w-50 text-end me-4">
+                <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <span class="icon material-symbols-outlined mt-1">add_circle</span>
+                </button>
+                <button type="button" class="btn btn-danger ms-1" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    data-bs-title="Remove all Data" onclick="clearAll()">
+                    <span class="icon material-symbols-outlined mt-1">delete_forever</span>
+                </button>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Profile</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Id</th>
+                    <th>Password</th>
+                    <th>Address</th>
+                    <th>Gender</th>
+                    <th>Skills</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+
+        </table>
+    </div>
+
+    <script>
+
+        let personData = JSON.parse(localStorage.getItem('personData')) || []
+        let editId = ''
+        let profile = ''
+        let prev = document.getElementById('imgprev')
+
+
+        const validation = () => {
+
+            let error = true
+            let fname = document.getElementById('fname').value
+            let lname = document.getElementById('lname').value
+            let email = document.getElementById('mail').value
+            let password = document.getElementById('password').value
+            let address = document.getElementById('address').value
+            let male = document.getElementById('radio-male')
+            let female = document.getElementById('radio-female')
+            let other = document.getElementById('radio-other')
+            let checkbox = document.querySelectorAll('input[type=checkbox]:checked');
+
+            if (fname === '') {
+                document.getElementById('valid-fname').innerHTML = 'Please Enter Your First Name';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-fname').innerHTML = '';
+            }
+
+            if (lname === '') {
+                document.getElementById('valid-lname').innerHTML = 'Please Enter Your Last Name';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-lname').innerHTML = '';
+            }
+
+            if (email === '') {
+                document.getElementById('valid-mail').innerHTML = 'Please Enter Your Email Id';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-mail').innerHTML = '';
+            }
+
+            if (password === '') {
+                document.getElementById('valid-password').innerHTML = 'Please Enter Your Valid Password';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-password').innerHTML = '';
+            }
+
+            if (address === '') {
+                document.getElementById('valid-address').innerHTML = 'Please Enter Your Valid Address';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-address').innerHTML = '';
+            }
+
+            if (!male.checked && !female.checked && !other.checked) {
+                document.getElementById('valid-gender').innerHTML = 'Please Select Your Gender';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-gender').innerHTML = '';
+            }
+
+            if (checkbox.length == 0) {
+                document.getElementById('valid-skills').innerHTML = 'Please Select Your Skills';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-skills').innerHTML = '';
+            }
+
+            if (profile == '') {
+                document.getElementById('valid-profile').innerHTML = 'Please Upload Your Profile Picture';
+                error = false;
+            }
+            else {
+                document.getElementById('valid-profile').innerHTML = '';
+            }
+
+            return error
+
+        }
+
+        const handleClick = () => {
+            if (validation()) {
+                let obj = {}
+                let fname = document.getElementById('fname').value
+                let lname = document.getElementById('lname').value
+                let email = document.getElementById('mail').value
+                let password = document.getElementById('password').value
+                let address = document.getElementById('address').value
+                let id = editId ? editId : Math.floor(Math.random() * 100000000)
+                let radio = document.querySelectorAll('input[type=radio]:checked');
+                let gender = '';
+                let checkbox = document.querySelectorAll('input[type=checkbox]:checked');
+                let skills = [];
+
+                radio?.forEach((x) => {
+                    if (x.checked) {
+                        gender = x.value
+                    }
+                })
+
+                checkbox?.forEach((x) => {
+                    if (x.checked) {
+                        skills.push(x.value)
+                    }
+                })
+
+                obj = { id, fname, lname, email, password, address, gender, skills, profile }
+
+                if (editId) {
+                    let editData = personData.findIndex(x => x.id == editId);
+                    personData.splice(editData, 1, obj);
+                    editId = "";
+                }
+                else {
+                    personData.push(obj);
+                }
+
+                localStorage.setItem('personData', JSON.stringify(personData))
+                document.getElementById('exampleModalLabel').innerHTML = 'Add Data'
+
+                printGrid()
+                resetForm()
+
+                let modalElement = document.getElementById('exampleModal');
+                let modal = bootstrap.Modal.getInstance(modalElement);
+                modal.hide();
+
+            }
+        }
+
+        function getImageURL(element) {
+            var file = element.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                profile = reader.result
+                prev.src = reader.result
+                prev.style.display = 'block'
+            }
+            reader.readAsDataURL(file);
+        }
+
+        const resetForm = () => {
+            document.getElementById('form').reset()
+            profile = ''
+            editId = ''
+            prev.style.display = 'none'
+
+            document.getElementById('valid-fname').innerHTML = ''
+        }
+
+        window.addEventListener('load', () => {
+            printGrid()
+        });
+
+        const deleteData = (deleteId) => {
+
+            if (confirm('are you Sure'))
+                personData.splice(deleteId, 1)
+            printGrid()
+        }
+
+        const editData = (id) => {
+
+            document.getElementById('exampleModalLabel').innerHTML = 'Edit Data'
+            resetForm()
+
+            editId = id
+            let editData = personData.find(x => x.id == id)
+
+            document.getElementById('fname').value = editData.fname
+            document.getElementById('lname').value = editData.lname
+            document.getElementById('mail').value = editData.email
+            document.getElementById('password').value = editData.password
+            document.getElementById('address').value = editData.address
+
+            let radio = document.querySelectorAll('input[type=radio]');
+
+            radio?.forEach((x) => {
+                if (x.value == editData.gender) {
+                    x.checked = true;
+                }
+            })
+
+            let checkbox = document.querySelectorAll('input[type=checkbox]');
+
+            checkbox?.forEach((x) => {
+                x.checked = editData?.skills?.includes(x.value)
+            });
+
+            profile = editData.profile
+
+            prev.src = editData.profile
+            prev.style.display = 'block'
+
+        }
+
+        const clearAll = () => {
+            window.location.reload()
+            localStorage.clear('personData')
+        }
+
+        const printGrid = () => {
+
+            localStorage.setItem('personData', JSON.stringify(personData))
+
+            let tbody = document.getElementById('tbody')
+            let html = ''
+
+            personData.map((x, index) => {
+                html += `
+                <tr>
+                    <td>#${x.id}</td>
+                    <td><img src='${x.profile}' id='proImg' ></td>
+                    <td>${x.fname}</td>
+                    <td>${x.lname}</td>
+                    <td>${x.email}</td>
+                    <td>${x.password}</td>
+                    <td>${x.address}</td>
+                    <td>${x.gender}</td>
+                    <td>${x.skills.join(',' + ' ')}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick='editData(${x.id})'><span class="icon material-symbols-outlined mt-1">edit</span></button>      
+                        <button type="button" class="btn btn-danger" onClick='deleteData(${index})'><span class="icon material-symbols-outlined mt-1">delete</span></button>      
+                    </td>
+                </tr>
+            `
+            })
+
+            tbody.innerHTML = html
+
+
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
